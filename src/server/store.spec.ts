@@ -12,7 +12,7 @@ describe('ServiceStore', () => {
   };
 
   beforeEach(() => {
-    store = new ServiceStore(buildTree(), require('grpc'));
+    store = new ServiceStore(buildTree(), require('@grpc/grpc-js'));
   });
 
   it('should get a service correctly', () => {

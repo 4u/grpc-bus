@@ -23,7 +23,7 @@ export class Server {
 
   public constructor(private protoRoot: ProtoBuf.Root,
                      private send: (message: IGBServerMessage) => void,
-                     // Pass require('grpc')
+                     // Pass require('@grpc/grpc-js')
                      private grpc: any) {
     this.store = new ServiceStore(protoRoot, this.grpc);
   }

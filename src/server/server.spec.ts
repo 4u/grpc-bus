@@ -24,7 +24,7 @@ describe('Server', () => {
     lookupTree = buildTree();
     server = new Server(lookupTree, (msg: IGBServerMessage) => {
       recvQueue.push(msg);
-    }, require('grpc'));
+    }, require('@grpc/grpc-js'));
     recvQueue.length = 0;
     encodedData = lookupTree.lookup('mock.HelloRequest').encode({'name': 'hello'}).finish();
     encodedResponseData = lookupTree.lookup('mock.HelloReply').encode({message: 'hello'}).finish();

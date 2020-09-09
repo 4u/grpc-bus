@@ -25,7 +25,7 @@ export class Service {
   constructor(private protoRoot: ProtoBuf.Root,
               clientId: number,
               info: IGBServiceInfo,
-              // Pass require('grpc') as an argument.
+              // Pass require('@grpc/grpc-js') as an argument.
               private grpc: any) {
     this.clientIds = [clientId];
     this.info = info;

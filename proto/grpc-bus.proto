@@ -1,5 +1,5 @@
 syntax="proto3";
-package grpcbus;
+package GrpcBus;
 
 // Wrapper for a message from client
 message GBClientMessage {

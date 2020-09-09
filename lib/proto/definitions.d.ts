@@ -1,6 +1,6 @@
 export declare const PROTO_DEFINITIONS: {
     nested: {
-        grpcbus: {
+        GrpcBus: {
             nested: {
                 GBClientMessage: {
                     fields: {

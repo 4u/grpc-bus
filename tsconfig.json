@@ -9,6 +9,7 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "target": "ES5",
+    "types": ["node", "jasmine"],
     "outDir": "lib/"
   },
   "formatCodeOptions": {

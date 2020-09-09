@@ -3,7 +3,7 @@
 /* tslint:disable:max-line-length */
 export const PROTO_DEFINITIONS = {
   "nested": {
-    "grpcbus": {
+    "GrpcBus": {
       "nested": {
         "GBClientMessage": {
           "fields": {

@@ -8,7 +8,7 @@ import {
 import { buildTree, MockServer } from './mock';
 import * as ProtoBuf from 'protobufjs';
 
-let grpc = require('grpc');
+let grpc = require('@grpc/grpc-js');
 let mockProto = grpc.loadObject(buildTree());
 let localAddress = '127.0.0.1:50235';
 
@@ -35,7 +35,7 @@ describe('e2e', () => {
     });
     gbServer = new Server(buildTree(), (msg: IGBServerMessage) => {
       gbClient.handleMessage(msg);
-    }, require('grpc'));
+    }, require('@grpc/grpc-js'));
 
     gbTree = gbClient.root;
     let svcPromise: Promise<IServiceHandle> =
