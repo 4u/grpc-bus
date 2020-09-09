@@ -8,7 +8,6 @@ import {
   IGBCreateServiceResult,
   IGBServiceInfo,
 } from '../proto';
-import { fixLowercaseProtoPkgNames } from '../proto/fixLowercaseProtoPkgNames';
 import { Service } from './service';
 import { IServiceHandle } from './service';
 import * as ProtoBuf from 'protobufjs';
@@ -20,7 +19,6 @@ export class Client {
   public constructor(private protoRoot: ProtoBuf.Root,
                      private send: (message: IGBClientMessage) => void) {
     this.recurseBuildTree(protoRoot, null);
-    fixLowercaseProtoPkgNames(protoRoot);
   }
 
   public handleMessage(message: IGBServerMessage) {
@@ -77,6 +75,9 @@ export class Client {
           continue;
         }
         tree.nested[childName] = this.recurseBuildTree(tree.nested[childName], nextIdentifier);
+        if (childName[0] !== childName[0].toLowerCase() || !(childName in tree)) {
+          tree[childName] = tree.nested[childName];
+        }
       }
     }
     return tree;
