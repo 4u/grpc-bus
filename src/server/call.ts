@@ -1,3 +1,4 @@
+import { Metadata } from '@grpc/grpc-js';
 import { Subject } from 'rxjs/Subject';
 import { Service } from './service';
 import {
@@ -29,6 +30,21 @@ export class Call {
       throw new Error('Call info, method ID must be given');
     }
     let args: any = this.callInfo.binArgument;
+    let metadata: any = undefined;
+    if (metadata) {
+      if (typeof this.callInfo.binMeta === 'object') {
+        metadata = new Metadata();
+        Object.keys(this.callInfo.binMeta).forEach(key => {
+          metadata.set(key, this.callInfo.binMeta[key]);
+        });
+      } else {
+        throw new Error(
+          'Method ' +
+          this.callInfo.methodId +
+          ' has bad metadata. Shold be strictly Record<string, string>.'
+        );
+      }
+    }
     let rpcMeta: ProtoBuf.Method =
       <any>this.service.serviceMeta.lookup(this.callInfo.methodId);
     if (!rpcMeta) {
@@ -40,7 +56,7 @@ export class Call {
       throw new Error('Method ' + camelMethod + ' not defined by grpc.');
     }
     if (rpcMeta.requestStream && !rpcMeta.responseStream) {
-      this.streamHandle = this.service.stub[camelMethod]((error: any, response: any) => {
+      this.streamHandle = this.service.stub[camelMethod](metadata, (error: any, response: any) => {
         this.handleCallCallback(error, response);
       });
       // If they sent some args (shouldn't happen usually) send it off anyway
@@ -48,10 +64,10 @@ export class Call {
         this.streamHandle.write(args);
       }
     } else if (rpcMeta.requestStream && rpcMeta.responseStream) {
-      this.streamHandle = this.service.stub[camelMethod]();
+      this.streamHandle = this.service.stub[camelMethod](metadata);
       this.setCallHandlers(this.streamHandle);
     } else if (!rpcMeta.requestStream && rpcMeta.responseStream) {
-      this.streamHandle = this.service.stub[camelMethod](args);
+      this.streamHandle = this.service.stub[camelMethod](args, metadata);
       this.setCallHandlers(this.streamHandle);
     } else if (!rpcMeta.requestStream && !rpcMeta.responseStream) {
       if (!args) {
@@ -60,7 +76,7 @@ export class Call {
                         ' requires an argument object of type ' +
                         rpcMeta.resolvedRequestType.name + '.');
       }
-      this.service.stub[camelMethod](args, (error: any, response: any) => {
+      this.service.stub[camelMethod](args, metadata, (error: any, response: any) => {
         this.handleCallCallback(error, response);
       });
     }

@@ -138,17 +138,24 @@ export class Service {
   private buildStubMethod(methodMeta: ProtoBuf.Method) {
     let methodName = methodMeta.name.charAt(0).toLowerCase() + methodMeta.name.slice(1);
     this.handle[methodName] = (argument?: any,
+                               metadata?: any,
                                callback?: (error?: any, response?: any) => void) => {
-      if (typeof argument === 'function' && !callback) {
-        callback = argument;
-        argument = undefined;
+      if (!callback) {
+        if (typeof metadata === 'function') {
+          callback = metadata;
+          metadata = undefined;
+        } else if (metadata === undefined && typeof argument === 'function') {
+          callback = argument;
+          argument = undefined;
+        }
       }
-      return this.startCall(methodMeta, argument, callback);
+      return this.startCall(methodMeta, argument, metadata, callback);
     };
   }
 
   private startCall(methodMeta: ProtoBuf.Method,
                     argument?: any,
+                    metadata?: any,
                     callback?: (error?: any, response?: any) => void): ICallHandle {
     let callId = this.callIdCounter++;
     let args: any;
