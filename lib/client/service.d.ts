@@ -1,7 +1,6 @@
 import { IGBClientMessage, IGBServiceInfo, IGBCreateCallResult, IGBCallEnded, IGBCallEvent, IGBCreateServiceResult, IGBReleaseServiceResult } from '../proto';
 import { Subject } from 'rxjs/Subject';
 import { ICallHandle } from './call';
-import * as ProtoBuf from 'protobufjs';
 export interface IServicePromise {
     resolve: (handle: IServiceHandle) => void;
     reject: (error?: any) => void;
@@ -21,7 +20,7 @@ export declare class Service {
     private calls;
     private callIdCounter;
     private serverReleased;
-    constructor(serviceMeta: ProtoBuf.Service, clientId: number, info: IGBServiceInfo, promise: IServicePromise, send: (message: IGBClientMessage) => void);
+    constructor(serviceMeta: import('protobufjs').Service, clientId: number, info: IGBServiceInfo, promise: IServicePromise, send: (message: IGBClientMessage) => void);
     initStub(): void;
     handleCreateResponse(msg: IGBCreateServiceResult): void;
     handleCallCreateResponse(msg: IGBCreateCallResult): void;

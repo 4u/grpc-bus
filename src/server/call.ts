@@ -31,19 +31,18 @@ export class Call {
     }
     let args: any = this.callInfo.binArgument;
     let metadata: any = undefined;
-    if (metadata) {
-      if (typeof this.callInfo.binMeta === 'object') {
-        metadata = new Metadata();
-        Object.keys(this.callInfo.binMeta).forEach(key => {
-          metadata.set(key, this.callInfo.binMeta[key]);
-        });
-      } else {
-        throw new Error(
-          'Method ' +
-          this.callInfo.methodId +
-          ' has bad metadata. Shold be strictly Record<string, string>.'
-        );
-      }
+    if (this.callInfo.strMeta) {
+      const jsonMeta: Record<string, string> = JSON.parse(this.callInfo.strMeta);
+      metadata = new Metadata();
+      Object.keys(jsonMeta).forEach(key => {
+        metadata.set(key, jsonMeta[key]);
+      });
+    } else {
+      throw new Error(
+        'Method ' +
+        this.callInfo.methodId +
+        ' has bad metadata. Shold be strictly Record<string, string>.'
+      );
     }
     let rpcMeta: ProtoBuf.Method =
       <any>this.service.serviceMeta.lookup(this.callInfo.methodId);

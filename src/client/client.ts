@@ -10,13 +10,12 @@ import {
 } from '../proto';
 import { Service } from './service';
 import { IServiceHandle } from './service';
-import * as ProtoBuf from 'protobufjs';
 
 export class Client {
   private serviceIdCounter: number = 1;
   private services: { [id: number]: Service } = {};
 
-  public constructor(private protoRoot: ProtoBuf.Root,
+  public constructor(private protoRoot: import('protobufjs').Root,
                      private send: (message: IGBClientMessage) => void) {
     this.recurseBuildTree(protoRoot, null);
   }
@@ -42,7 +41,7 @@ export class Client {
   /*
    * Returns the ProtoBuf.Root containing service constructor functions.
    */
-  public get root(): ProtoBuf.Root {
+  public get root(): import('protobufjs').Root {
     return this.protoRoot;
   }
 
@@ -84,7 +83,7 @@ export class Client {
   }
 
   // Build a service and return a service handle promise.
-  private buildService(serviceMeta: ProtoBuf.Service,
+  private buildService(serviceMeta: import('protobufjs').Service,
                        method: string,
                        endpoint: string): Promise<IServiceHandle> {
     return new Promise((resolve, reject) => {

@@ -53,15 +53,6 @@ export const PROTO_DEFINITIONS = {
             }
           }
         },
-        "GBMetadata": {
-          "fields": {
-            "fields": {
-              "keyType": "string",
-              "type": "string",
-              "id": 1
-            }
-          }
-        },
         "GBServiceInfo": {
           "fields": {
             "endpoint": {
@@ -104,8 +95,8 @@ export const PROTO_DEFINITIONS = {
               "type": "bytes",
               "id": 2
             },
-            "binMeta": {
-              "type": "GBMetadata",
+            "strMeta": {
+              "type": "string",
               "id": 3
             }
           }

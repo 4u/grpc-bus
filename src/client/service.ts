@@ -12,7 +12,6 @@ import {
   Subject,
 } from 'rxjs/Subject';
 import { Call, ICallHandle } from './call';
-import * as ProtoBuf from 'protobufjs';
 
 export interface IServicePromise {
   resolve: (handle: IServiceHandle) => void;
@@ -37,7 +36,7 @@ export class Service {
   private callIdCounter: number = 1;
   private serverReleased: boolean = false;
 
-  constructor(private serviceMeta: ProtoBuf.Service,
+  constructor(private serviceMeta: import('protobufjs').Service,
               private clientId: number,
               private info: IGBServiceInfo,
               private promise: IServicePromise,
@@ -135,7 +134,7 @@ export class Service {
     this.disposed.next(this);
   }
 
-  private buildStubMethod(methodMeta: ProtoBuf.Method) {
+  private buildStubMethod(methodMeta: import('protobufjs').Method) {
     let methodName = methodMeta.name.charAt(0).toLowerCase() + methodMeta.name.slice(1);
     this.handle[methodName] = (argument?: any,
                                metadata?: any,
@@ -153,7 +152,7 @@ export class Service {
     };
   }
 
-  private startCall(methodMeta: ProtoBuf.Method,
+  private startCall(methodMeta: import('protobufjs').Method,
                     argument?: any,
                     metadata?: any,
                     callback?: (error?: any, response?: any) => void): ICallHandle {
@@ -166,6 +165,7 @@ export class Service {
     let info: IGBCallInfo = {
       methodId: methodMeta.name,
       binArgument: args,
+      strMeta: metadata ? JSON.stringify(metadata) : undefined,
     };
     if (methodMeta.requestStream && argument) {
       throw new Error('Argument should not be specified for a request stream.');

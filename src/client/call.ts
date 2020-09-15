@@ -6,7 +6,6 @@ import {
   IGBClientMessage,
 } from '../proto';
 import { Subject } from 'rxjs/Subject';
-import * as ProtoBuf from 'protobufjs';
 
 export interface ICallHandle {
   // Send a message on a streaming call
@@ -29,13 +28,13 @@ export class Call implements ICallHandle {
   public disposed: Subject<Call> = new Subject<Call>();
   private eventHandlers: { [id: string]: ((arg: any) => void)[] } = {};
   private endEmitted: boolean = false;
-  private responseBuilder: ProtoBuf.Type;
-  private requestBuilder: ProtoBuf.Type;
+  private responseBuilder: import('protobufjs').Type;
+  private requestBuilder: import('protobufjs').Type;
 
   constructor(public clientId: number,
               public clientServiceId: number,
               private info: IGBCallInfo,
-              private callMeta: ProtoBuf.Method,
+              private callMeta: import('protobufjs').Method,
               private callback: (error?: any, response?: any) => void,
               private send: (message: IGBClientMessage) => void) {
     this.requestBuilder = callMeta.resolvedRequestType;
