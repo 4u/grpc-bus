@@ -1,4 +1,3 @@
-import { Metadata } from '@grpc/grpc-js';
 import { Subject } from 'rxjs/Subject';
 import { Service } from './service';
 import {
@@ -33,7 +32,7 @@ export class Call {
     let metadata: any = undefined;
     if (this.callInfo.strMeta) {
       const jsonMeta: Record<string, string> = JSON.parse(this.callInfo.strMeta);
-      metadata = new Metadata();
+      metadata = new this.service.grpc.Metadata();
       Object.keys(jsonMeta).forEach(key => {
         metadata.set(key, jsonMeta[key]);
       });

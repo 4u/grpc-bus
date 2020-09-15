@@ -3,7 +3,7 @@ import { IGBServiceInfo } from '../proto';
 import * as ProtoBuf from 'protobufjs';
 export declare class Service {
     private protoRoot;
-    private grpc;
+    grpc: any;
     disposed: Subject<Service>;
     stub: any;
     serviceMeta: ProtoBuf.Service;
