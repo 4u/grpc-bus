@@ -12,6 +12,13 @@ export interface IGBServerMessage {
     callEvent?: IGBCallEvent;
     callEnded?: IGBCallEnded;
 }
+export interface IGBKeyValue {
+    key?: string;
+    value?: string;
+}
+export interface IGBMetadata {
+    fields?: IGBKeyValue[];
+}
 export interface IGBServiceInfo {
     endpoint?: string;
     serviceId?: string;
@@ -26,7 +33,7 @@ export interface IGBReleaseService {
 export interface IGBCallInfo {
     methodId?: string;
     binArgument?: Uint8Array;
-    strMeta?: string;
+    meta?: IGBMetadata;
 }
 export interface IGBCreateCall {
     serviceId?: number;

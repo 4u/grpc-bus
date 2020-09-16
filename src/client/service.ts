@@ -7,6 +7,7 @@ import {
   IGBCreateServiceResult,
   IGBReleaseServiceResult,
   IGBCallInfo,
+  IGBMetadata,
 } from '../proto';
 import {
   Subject,
@@ -158,14 +159,24 @@ export class Service {
                     callback?: (error?: any, response?: any) => void): ICallHandle {
     let callId = this.callIdCounter++;
     let args: any;
+    let meta: IGBMetadata;
     if (argument) {
+      let requestBuilder = methodMeta.resolvedRequestType;
+      args = requestBuilder.encode(argument).finish();
+    }
+    if (metadata) {
+      meta = {fields: []};
+      Object.keys(metadata).forEach(key => {
+        const value = metadata[key];
+        meta.fields.push({key, value})
+      });
       let requestBuilder = methodMeta.resolvedRequestType;
       args = requestBuilder.encode(argument).finish();
     }
     let info: IGBCallInfo = {
       methodId: methodMeta.name,
       binArgument: args,
-      strMeta: metadata ? JSON.stringify(metadata) : undefined,
+      meta,
     };
     if (methodMeta.requestStream && argument) {
       throw new Error('Argument should not be specified for a request stream.');

@@ -30,12 +30,11 @@ export class Call {
     }
     let args: any = this.callInfo.binArgument;
     let metadata: any = undefined;
-    if (this.callInfo.strMeta) {
+    if (this.callInfo.meta) {
       try {
-        const jsonMeta: Record<string, string> = JSON.parse(this.callInfo.strMeta);
         metadata = new this.service.grpc.Metadata();
-        Object.keys(jsonMeta).forEach(key => {
-          metadata.set(key, jsonMeta[key]);
+        this.callInfo.meta.fields.forEach(field => {
+          metadata.set(field.key, field.value);
         });
       } catch (ex) {
         throw new Error(

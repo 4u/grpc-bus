@@ -50,6 +50,27 @@ export declare const PROTO_DEFINITIONS: {
                         };
                     };
                 };
+                GBKeyValue: {
+                    fields: {
+                        key: {
+                            type: string;
+                            id: number;
+                        };
+                        value: {
+                            type: string;
+                            id: number;
+                        };
+                    };
+                };
+                GBMetadata: {
+                    fields: {
+                        fields: {
+                            rule: string;
+                            type: string;
+                            id: number;
+                        };
+                    };
+                };
                 GBServiceInfo: {
                     fields: {
                         endpoint: {
@@ -92,7 +113,7 @@ export declare const PROTO_DEFINITIONS: {
                             type: string;
                             id: number;
                         };
-                        strMeta: {
+                        meta: {
                             type: string;
                             id: number;
                         };
