@@ -168,7 +168,7 @@ export class Service {
       meta = {fields: []};
       Object.keys(metadata).forEach(key => {
         const value = metadata[key];
-        meta.fields.push({key, value})
+        meta.fields.push({key, value});
       });
       let requestBuilder = methodMeta.resolvedRequestType;
       args = requestBuilder.encode(argument).finish();

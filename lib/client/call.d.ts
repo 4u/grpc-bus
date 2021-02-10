@@ -7,20 +7,22 @@ export interface ICallHandle {
     end?(): void;
     terminate?(): void;
 }
-export declare class Call implements ICallHandle {
+export declare class Call<T = any> implements ICallHandle {
     clientId: number;
     clientServiceId: number;
     private info;
     private callMeta;
     private callback;
     private send;
-    disposed: Subject<Call>;
+    disposed: Subject<Call<T>>;
     private eventHandlers;
     private endEmitted;
     private responseBuilder;
     private requestBuilder;
-    constructor(clientId: number, clientServiceId: number, info: IGBCallInfo, callMeta: import('protobufjs').Method, callback: (error?: any, response?: any) => void, send: (message: IGBClientMessage) => void);
-    on(eventId: string, callback: (arg: any) => void): void;
+    constructor(clientId: number, clientServiceId: number, info: IGBCallInfo, callMeta: import('protobufjs').Method, callback: (error?: any, response?: T) => void, send: (message: IGBClientMessage) => void);
+    on(eventId: 'error', callback: (arg: Error) => void): void;
+    on(eventId: 'data', callback: (arg: T) => void): void;
+    on(eventId: 'end', callback: () => void): void;
     off(eventId: string): void;
     handleCreateResponse(msg: IGBCreateCallResult): void;
     handleEnded(msg: IGBCallEnded): void;

@@ -24,8 +24,8 @@ export interface ICallHandle {
   terminate?(): void;
 }
 
-export class Call implements ICallHandle {
-  public disposed: Subject<Call> = new Subject<Call>();
+export class Call<T = any> implements ICallHandle {
+  public disposed: Subject<Call<T>> = new Subject<Call<T>>();
   private eventHandlers: { [id: string]: ((arg: any) => void)[] } = {};
   private endEmitted: boolean = false;
   private responseBuilder: import('protobufjs').Type;
@@ -35,12 +35,15 @@ export class Call implements ICallHandle {
               public clientServiceId: number,
               private info: IGBCallInfo,
               private callMeta: import('protobufjs').Method,
-              private callback: (error?: any, response?: any) => void,
+              private callback: (error?: any, response?: T) => void,
               private send: (message: IGBClientMessage) => void) {
     this.requestBuilder = callMeta.resolvedRequestType;
     this.responseBuilder = callMeta.resolvedResponseType;
   }
 
+  public on(eventId: 'error', callback: (arg: Error) => void): void;
+  public on(eventId: 'data', callback: (arg: T) => void): void;
+  public on(eventId: 'end', callback: () => void): void;
   public on(eventId: string, callback: (arg: any) => void): void {
     let handlers = this.eventHandlers[eventId];
     if (!handlers) {

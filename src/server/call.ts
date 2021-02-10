@@ -41,7 +41,7 @@ export class Call {
           'Method ' +
           this.callInfo.methodId +
           ' has bad metadata. Shold be strictly Record<string, string>.'
-        ); 
+        );
       }
     }
     let rpcMeta: ProtoBuf.Method =
