@@ -1,4 +1,5 @@
 import { IGBCallInfo, IGBCreateCallResult, IGBCallEvent, IGBCallEnded, IGBClientMessage } from '../proto';
+import { Status } from '../types';
 import { Subject } from 'rxjs/Subject';
 export interface ICallHandle {
     write?(msg: any): void;
@@ -22,6 +23,7 @@ export declare class Call<T = any> implements ICallHandle {
     constructor(clientId: number, clientServiceId: number, info: IGBCallInfo, callMeta: import('protobufjs').Method, callback: (error?: any, response?: T) => void, send: (message: IGBClientMessage) => void);
     on(eventId: 'error', callback: (arg: Error) => void): void;
     on(eventId: 'data', callback: (arg: T) => void): void;
+    on(eventId: 'status', callback: (arg: Status) => void): void;
     on(eventId: 'end', callback: () => void): void;
     off(eventId: string): void;
     handleCreateResponse(msg: IGBCreateCallResult): void;

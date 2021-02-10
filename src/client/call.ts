@@ -5,6 +5,7 @@ import {
   IGBCallEnded,
   IGBClientMessage,
 } from '../proto';
+import { Status } from '../types';
 import { Subject } from 'rxjs/Subject';
 
 export interface ICallHandle {
@@ -23,7 +24,6 @@ export interface ICallHandle {
   // Call to terminate this call on a streaming call.
   terminate?(): void;
 }
-
 export class Call<T = any> implements ICallHandle {
   public disposed: Subject<Call<T>> = new Subject<Call<T>>();
   private eventHandlers: { [id: string]: ((arg: any) => void)[] } = {};
@@ -43,6 +43,7 @@ export class Call<T = any> implements ICallHandle {
 
   public on(eventId: 'error', callback: (arg: Error) => void): void;
   public on(eventId: 'data', callback: (arg: T) => void): void;
+  public on(eventId: 'status', callback: (arg: Status) => void): void;
   public on(eventId: 'end', callback: () => void): void;
   public on(eventId: string, callback: (arg: any) => void): void {
     let handlers = this.eventHandlers[eventId];
