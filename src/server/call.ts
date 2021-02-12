@@ -75,9 +75,14 @@ export class Call {
                         ' requires an argument object of type ' +
                         rpcMeta.resolvedRequestType.name + '.');
       }
-      this.service.stub[camelMethod](args, metadata, (error: any, response: any) => {
+      const callback = (error: any, response: any) => {
         this.handleCallCallback(error, response);
-      });
+      };
+      if (metadata) {
+        this.service.stub[camelMethod](args, metadata, callback);
+      } else {
+        this.service.stub[camelMethod](args, callback);
+      }
     }
   }
 
